@@ -21,7 +21,6 @@ public class SaveLoadSystem : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveGame();
-        Debug.Log("Auto saved");
     }
 
     private void OnApplicationPause(bool pauseStatus)

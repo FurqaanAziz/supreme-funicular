@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 using TMPro;
 
+
 namespace CardGame
 {
     public class GridManager : MonoBehaviour
@@ -19,11 +20,33 @@ namespace CardGame
 
         public TMP_InputField rowsInputField, columnsInputField;
         public GameObject menuPanel;
+
+        public TMP_Text warning;
         public void StartGame()
         {
+            if (string.IsNullOrEmpty(rowsInputField.text) || string.IsNullOrEmpty(columnsInputField.text))
+            {
+                warning.text = "Rows and columns fields cannot be empty!";
+                warning.gameObject.SetActive(true);
+                Invoke("WarningTextDeactivate", 3f);
+                return;
+            }
             rows = int.Parse(rowsInputField.text);
             columns = int.Parse(columnsInputField.text);
-           
+            if (!IsGridValid(rows, columns))
+            {
+                if(rows <= 10 || columns <= 10)
+                {
+                    warning.text = ($"Invalid grid: {rows} x {columns} = {rows * columns} cards. Result Must be even.");
+                }
+                else
+                {
+                    warning.text = ($"Grid exceeding limit of 10 x 10");
+                }
+                warning.gameObject.SetActive(true);
+                Invoke("WarningTextDeactivate", 3f);
+                return;
+            }
             SetupGridLayout();
             CreateGrid(rows, columns);
             menuPanel.SetActive(false);
@@ -173,6 +196,20 @@ namespace CardGame
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        }
+        private bool IsGridValid(int rows, int columns)
+        {
+            if (rows < 2 || rows > 10 || columns < 2 || columns > 10)
+            {
+                warning.text = "Rows and columns must be between 2 and 10.";
+                return false;
+            }
+
+            return (rows * columns) % 2 == 0;
+        }
+        private void WarningTextDeactivate()
+        {
+            warning.gameObject.SetActive(false);
         }
     }
 }
