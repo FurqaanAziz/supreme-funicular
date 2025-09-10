@@ -1,18 +1,29 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CardGame
 {
-    public class Card : MonoBehaviour, IPointerClickHandler
+    public enum CardEvent
     {
+        Flipped,
+        Matched,
+        Mismatched
+    }
+    public class Card : MonoBehaviour, IPointerClickHandler, ISubject
+    {
+        public int id;
         public bool isFaceUp = false;
         public Sprite faceSprite;
         public Sprite backSprite;
         private Image cardImage;
         private Coroutine flipCoroutine;
 
+        private List<IObserver> observers = new List<IObserver>();
+        public void Attach(IObserver observer) => observers.Add(observer);
         void Start()
         {
 
@@ -34,8 +45,6 @@ namespace CardGame
             }
             flipCoroutine = StartCoroutine(FlipCard());
         }
-
-        
         private IEnumerator FlipCard()
         {
 
@@ -76,8 +85,16 @@ namespace CardGame
             if (!isFaceUp)
             {
                 Flip();
+                FindObjectOfType<GameManager>().CardClicked(this);
             }
         }
-      
+
+        public void Notify(Card card, CardEvent cardEvent)
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnNotify(card, cardEvent);
+            }
+        }
     }
 }
