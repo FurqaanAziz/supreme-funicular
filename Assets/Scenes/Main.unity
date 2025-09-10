@@ -597,9 +597,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12f17d61d9650084c967840e5e8a1930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 8727881467430242202, guid: 536f55d23ca3f76458efc261dea74e44, type: 3}
-  rows: 5
-  columns: 6
+  cardPrefabs:
+  - {fileID: 8727881467430242202, guid: 536f55d23ca3f76458efc261dea74e44, type: 3}
+  - {fileID: 6477883151871443026, guid: f74498f3f1b1d1f458e59706837126d1, type: 3}
+  - {fileID: 8317080065854038030, guid: d1b9839e5c382504fb3fc36708c710ca, type: 3}
+  - {fileID: 5763914631436139697, guid: d22b0f69656bb1b45a6e817121445b48, type: 3}
+  - {fileID: 7563643331626547746, guid: 0f45d5563e19bea4b9c831a008124d9e, type: 3}
+  - {fileID: 7186866851524373571, guid: f5f910e25136bf5428fbbcdc2ac13322, type: 3}
+  - {fileID: 1656319222284996193, guid: b5a6d7947635cb846bcdb51b313ef4d1, type: 3}
+  - {fileID: 3466712965653358716, guid: fa9a73d0ca49e0748aed5984e2db4ac6, type: 3}
+  rows: 4
+  columns: 4
   spacing: 10
   aspectRatio: 1
 --- !u!114 &1402295374
