@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 namespace CardGame
 {
@@ -14,15 +15,21 @@ namespace CardGame
         public float spacing = 10f;
         public float aspectRatio = 1.0f;
 
-
         private Dictionary<string, int> prefabIDs = new Dictionary<string, int>();
 
-        void Start()
+        public TMP_InputField rowsInputField, columnsInputField;
+        public GameObject menuPanel;
+        public void StartGame()
         {
+            rows = int.Parse(rowsInputField.text);
+            columns = int.Parse(columnsInputField.text);
+           
             SetupGridLayout();
             CreateGrid(rows, columns);
+            menuPanel.SetActive(false);
         }
-       
+
+
         public void CreateGrid(int rows, int columns)
         {
             foreach (Transform child in transform)
@@ -124,6 +131,17 @@ namespace CardGame
                 list[n] = list[k];
                 list[k] = temp;
             }
+        }
+        public void RestartGame()
+        {
+
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            prefabIDs.Clear();
+            menuPanel.SetActive(true);
         }
     }
 }
