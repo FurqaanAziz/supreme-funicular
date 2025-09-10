@@ -157,5 +157,26 @@ namespace CardGame
                 gridManager.RestartGame();
             }
         }
+
+        public int GetScore() => matchedPairs;
+
+        public List<int> GetMatchedCardIds() => matchedCardIds;
+
+        public void RestoreGameState(SaveData data)
+        {
+            matchedPairs = data.score;
+            isGameCompleted = data.isGameCompleted;
+
+            var uniqueMatchedIds = new HashSet<int>(GetMatchedCardIds());
+            matchedPairs = uniqueMatchedIds.Count;
+
+            UpdateScoreText();
+
+            if (matchedPairs == FindObjectsOfType<Card>().Length / 2)
+            {
+                isGameCompleted = true;
+                ShowGameCompletedPanel();
+            }
+        }
     }
 }

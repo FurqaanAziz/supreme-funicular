@@ -143,5 +143,36 @@ namespace CardGame
             prefabIDs.Clear();
             menuPanel.SetActive(true);
         }
+        public void RestoreGrid(SaveData data, GameManager gameManager)
+        {
+            RestartGame();
+
+            rows = data.rows;
+            columns = data.columns;
+
+            SetupGridLayout();
+
+            foreach (CardData cardData in data.cards)
+            {
+                GameObject prefab = cardPrefabs.Find(p => p.name == cardData.prefabName);
+                if (prefab != null)
+                {
+                    GameObject cardObj = Instantiate(prefab, transform);
+                    Card card = cardObj.GetComponent<Card>();
+                    card.id = cardData.id;
+                    card.isFaceUp = cardData.isFaceUp;
+                    card.InitializeCardSprite();
+                    card.FlipForLoad();
+                    card.Attach(gameManager);
+
+                    if (cardData.isFaceUp)
+                    {
+                        gameManager.GetMatchedCardIds().Add(card.id);
+                    }
+                }
+            }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        }
     }
 }
