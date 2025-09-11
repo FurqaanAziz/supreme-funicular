@@ -45,11 +45,10 @@ namespace CardGame
                 if (card != null)
                 {
                     bool isMatched = matchedIds.Contains(card.id);
-
                     data.cards.Add(new CardData
                     {
                         id = card.id,
-                        isFaceUp = isMatched,
+                        isFaceUp = card.isFaceUp, 
                         prefabName = card.gameObject.name.Replace("(Clone)", "").Trim()
                     });
                 }
@@ -57,7 +56,6 @@ namespace CardGame
 
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(SavePath, json);
-
         }
 
         public static void LoadGame(GridManager gridManager, GameManager gameManager)

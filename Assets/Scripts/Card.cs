@@ -24,6 +24,8 @@ namespace CardGame
 
         private List<IObserver> observers = new List<IObserver>();
         public void Attach(IObserver observer) => observers.Add(observer);
+
+        public CardEvent currentEvent;
         void Start()
         {
 
@@ -39,6 +41,11 @@ namespace CardGame
         }
         public void Flip()
         {
+            if (currentEvent == CardEvent.Mismatched)
+            {
+                Debug.Log("here over flipped check");
+                return; 
+            }
             if (flipCoroutine != null)
             {
                 StopCoroutine(flipCoroutine);
@@ -76,7 +83,7 @@ namespace CardGame
                 transform.localRotation = Quaternion.Slerp(originalRotation * Quaternion.Euler(0, 90, 0), originalRotation, t);
                 yield return null;
             }
-            transform.localRotation = originalRotation;
+            transform.localRotation = Quaternion.identity;
         }
 
 

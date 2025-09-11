@@ -175,6 +175,8 @@ namespace CardGame
 
             SetupGridLayout();
 
+            List<Card> instantiatedCards = new List<Card>();
+
             foreach (CardData cardData in data.cards)
             {
                 GameObject prefab = cardPrefabs.Find(p => p.name == cardData.prefabName);
@@ -185,13 +187,20 @@ namespace CardGame
                     card.id = cardData.id;
                     card.isFaceUp = cardData.isFaceUp;
                     card.InitializeCardSprite();
-                    card.FlipForLoad();
                     card.Attach(gameManager);
 
+                    instantiatedCards.Add(card);
                     if (cardData.isFaceUp)
                     {
                         gameManager.GetMatchedCardIds().Add(card.id);
                     }
+                }
+            }
+            foreach (var card in instantiatedCards)
+            {
+                if (card.isFaceUp)
+                {
+                    card.FlipForLoad();
                 }
             }
 

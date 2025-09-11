@@ -97,7 +97,7 @@ namespace CardGame
 
                 first.Notify(first, CardEvent.Mismatched);
                 second.Notify(second, CardEvent.Mismatched);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
 
                 first.Flip();
                 second.Flip();
@@ -188,9 +188,16 @@ namespace CardGame
         public void RestoreGameState(SaveData data)
         {
             matchedPairs = data.score;
-            isGameCompleted = data.isGameCompleted;
 
-            var uniqueMatchedIds = new HashSet<int>(GetMatchedCardIds());
+            matchedCardIds.Clear();
+            foreach (CardData cardData in data.cards)
+            {
+                if (cardData.isFaceUp) 
+                {
+                    matchedCardIds.Add(cardData.id);
+                }
+            }
+            var uniqueMatchedIds = new HashSet<int>(matchedCardIds);
             matchedPairs = uniqueMatchedIds.Count;
 
             UpdateScoreText();
@@ -227,6 +234,15 @@ namespace CardGame
                 comboText.text = "";
                 comboObject.SetActive(false);
             }
+        }
+
+        public void QuitApplication()
+        {
+            Application.Quit();
+
+            #if UNITY_EDITOR
+                        UnityEditor.EditorApplication.isPlaying = false;
+            #endif
         }
     }
 }
